@@ -2,26 +2,30 @@
   <span>Questions</span>
 </mat-toolbar>
 
-<form>
+<form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <mat-label>Question</mat-label>
-    <textarea matInput required></textarea>
+    <textarea matInput required formControlName="value"></textarea>
+    <mat-error> Question is <strong>required</strong> </mat-error>
   </mat-form-field>
 
-  <div id="correct-options">
+  <div id="correct-option">
     <h5>Correct Option</h5>
-    <mat-radio-group color="primary">
-      <mat-radio-button *ngFor="let option of options" value="option">{{
-        option
-      }}</mat-radio-button>
+    <mat-radio-group color="primary" formControlName="correct">
+      <mat-radio-button
+        *ngFor="let option of options; index as i"
+        [value]="option"
+        [checked]="i === 0"
+        >{{ option }}</mat-radio-button
+      >
     </mat-radio-group>
   </div>
 
-  <mat-form-field *ngFor="let option of options">
-    <mat-label>Option {{option}}</mat-label>
-    <textarea matInput required></textarea>
+  <mat-form-field *ngFor="let option of options; index as i">
+    <mat-label>Option {{ option }}</mat-label>
+    <textarea matInput required [formControl]="optionControls[i]"></textarea>
+    <mat-error> Option {{ option }} is <strong>required</strong> </mat-error>
   </mat-form-field>
 
-  <button mat-raised-button color="primary">Update</button>
+  <button mat-raised-button color="primary" type="submit">Update</button>
 </form>
-
