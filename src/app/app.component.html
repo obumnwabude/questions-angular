@@ -1,3 +1,27 @@
 <mat-toolbar class="mat-elevation-z2">
-    <span>Questions</span>
+  <span>Questions</span>
 </mat-toolbar>
+
+<form>
+  <mat-form-field>
+    <mat-label>Question</mat-label>
+    <textarea matInput required></textarea>
+  </mat-form-field>
+
+  <div id="correct-options">
+    <h5>Correct Option</h5>
+    <mat-radio-group color="primary">
+      <mat-radio-button *ngFor="let option of options" value="option">{{
+        option
+      }}</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <mat-form-field *ngFor="let option of options">
+    <mat-label>Option {{option}}</mat-label>
+    <textarea matInput required></textarea>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary">Update</button>
+</form>
+
