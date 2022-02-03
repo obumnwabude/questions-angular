@@ -1,9 +1,11 @@
 form {
   padding: 32px;
+  max-width: 384px;
+  margin: 0 auto;
 }
 
 mat-form-field {
-  margin-right: 32px;
+  display: block;
 }
 
 #correct-option {
@@ -14,4 +16,8 @@ mat-form-field {
 
 mat-radio-button {
   margin-right: 16px;
+}
+
+#update-btn-container {
+  text-align: right;
 }
