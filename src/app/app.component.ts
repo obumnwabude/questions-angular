@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { doc, Firestore, onSnapshot, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   options = ['A', 'B', 'C', 'D'];
   questionForm: FormGroup = new FormGroup({
     value: new FormControl('', Validators.required),
@@ -23,6 +23,7 @@ export class AppComponent {
       )
     )
   });
+  questionRef = doc(this.firestore, 'questions', 'question');
   get optionControls() {
     return (this.questionForm.get('options') as FormArray)
       .controls as FormGroup[];
@@ -30,14 +31,18 @@ export class AppComponent {
 
   constructor(private firestore: Firestore, private snackBar: MatSnackBar) {}
 
+  ngOnInit(): void {
+    onSnapshot(this.questionRef, (question) =>
+      this.questionForm.setValue(question.data() as any)
+    );
+  }
+
   async onSubmit(): Promise<void> {
     if (this.questionForm.valid) {
       try {
-        await setDoc(
-          doc(this.firestore, 'questions', 'question'),
-          this.questionForm.value,
-          { merge: true }
-        );
+        await setDoc(this.questionRef, this.questionForm.value, {
+          merge: true
+        });
         this.snackBar.open('Question successfully submitted.', '', {
           panelClass: ['snackbar-success']
         });
