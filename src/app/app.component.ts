@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { doc, Firestore, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -27,14 +28,24 @@ export class AppComponent {
       .controls as FormGroup[];
   }
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private firestore: Firestore, private snackBar: MatSnackBar) {}
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.questionForm.valid) {
-      console.log(this.questionForm.value);
-      this.snackBar.open('Question successfully submitted.', '', {
-        panelClass: ['snackbar-success']
-      });
+      try {
+        await setDoc(
+          doc(this.firestore, 'questions', 'question'),
+          this.questionForm.value,
+          { merge: true }
+        );
+        this.snackBar.open('Question successfully submitted.', '', {
+          panelClass: ['snackbar-success']
+        });
+      } catch (error) {
+        this.snackBar.open(`${error}`, '', {
+          panelClass: ['snackbar-error']
+        });
+      }
     } else {
       this.snackBar.open('Please fill all the required fields.', '', {
         panelClass: ['snackbar-error']

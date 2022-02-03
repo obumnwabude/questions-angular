@@ -9,10 +9,20 @@ import {
 } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import {
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS
+} from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import {
+  provideFirestore,
+  getFirestore,
+  connectFirestoreEmulator
+} from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +35,13 @@ import { AppComponent } from './app.component';
     MatInputModule,
     MatSnackBarModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      connectFirestoreEmulator(firestore, 'localhost', 8080);
+      return firestore;
+    })
   ],
   providers: [
     {
