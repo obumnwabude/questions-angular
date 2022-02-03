@@ -8,6 +8,7 @@ import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS
 } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import {
   MatSnackBarModule,
@@ -33,6 +34,7 @@ import {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressBarModule,
     MatSnackBarModule,
     MatToolbarModule,
     MatRadioModule,
@@ -50,7 +52,7 @@ import {
     },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-      useValue: { verticalPosition: 'top' }
+      useValue: { duration: 5000, verticalPosition: 'top' }
     }
   ],
   bootstrap: [AppComponent]

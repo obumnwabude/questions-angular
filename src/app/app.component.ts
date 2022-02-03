@@ -9,6 +9,7 @@ import { doc, Firestore, onSnapshot, setDoc } from '@angular/fire/firestore';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  loading = false;
   options = ['A', 'B', 'C', 'D'];
   questionForm: FormGroup = new FormGroup({
     value: new FormControl('', Validators.required),
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit {
   async onSubmit(): Promise<void> {
     if (this.questionForm.valid) {
       try {
+        this.loading = true;
         await setDoc(this.questionRef, this.questionForm.value, {
           merge: true
         });
@@ -50,6 +52,8 @@ export class AppComponent implements OnInit {
         this.snackBar.open(`${error}`, '', {
           panelClass: ['snackbar-error']
         });
+      } finally {
+        this.loading = false;
       }
     } else {
       this.snackBar.open('Please fill all the required fields.', '', {
