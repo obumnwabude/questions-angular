@@ -13,12 +13,18 @@ export class AppComponent {
     value: new FormControl('', Validators.required),
     correct: new FormControl(this.options[0], Validators.required),
     options: new FormArray(
-      this.options.map((_) => new FormControl('', Validators.required))
+      this.options.map(
+        (o) =>
+          new FormGroup({
+            index: new FormControl(o, Validators.required),
+            value: new FormControl('', Validators.required)
+          })
+      )
     )
   });
   get optionControls() {
     return (this.questionForm.get('options') as FormArray)
-      .controls as FormControl[];
+      .controls as FormGroup[];
   }
 
   constructor(private snackBar: MatSnackBar) {}

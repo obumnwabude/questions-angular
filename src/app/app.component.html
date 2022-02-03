@@ -21,10 +21,16 @@
     </mat-radio-group>
   </div>
 
-  <mat-form-field *ngFor="let option of options; index as i">
-    <mat-label>Option {{ option }}</mat-label>
-    <textarea matInput required [formControl]="optionControls[i]"></textarea>
-    <mat-error> Option {{ option }} is <strong>required</strong> </mat-error>
+  <mat-form-field *ngFor="let option of optionControls">
+    <mat-label>Option {{ option.get('index')?.value }}</mat-label>
+    <textarea
+      matInput
+      required
+      [formControl]="$any(option.get('value'))"
+    ></textarea>
+    <mat-error>
+      Option {{ option.get('index')?.value }} is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
 
   <div id="update-btn-container">
